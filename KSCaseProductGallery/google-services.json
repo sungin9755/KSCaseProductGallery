@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "534116484890",
+    "project_id": "ksproductgallery",
+    "storage_bucket": "ksproductgallery.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534116484890:android:60e6ab26ed1b1001984ea3",
+        "android_client_info": {
+          "package_name": "com.company.ksproductgallery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKhjeBuvtUqzjmEjqtLQrUxskRAaT9Am0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

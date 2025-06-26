@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KSCaseProductGallery.MainPage">
+
+    <CollectionView x:Name="ProductCollection"
+                    SelectionMode="Single"
+                    SelectionChanged="OnProductSelected">
+        <CollectionView.ItemsLayout>
+            <GridItemsLayout Orientation="Vertical" Span="2" />
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Border Padding="5" Margin="5">
+                    <StackLayout>
+                        <Image Source="{Binding LocalImagePath}"
+                           Aspect="AspectFill"
+                           HeightRequest="180"
+                           WidthRequest="180" />
+                        <Label Text="{Binding name}" FontSize="14"
+                           HorizontalTextAlignment="Center"
+                           LineBreakMode="TailTruncation"/>
+                    </StackLayout>
+                </Border>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+
+</ContentPage>
