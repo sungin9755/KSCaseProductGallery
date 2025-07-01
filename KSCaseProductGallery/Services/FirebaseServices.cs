@@ -18,7 +18,7 @@ namespace KSCaseProductGallery.Services
         private readonly string firestoreBaseUrl =
             "https://firestore.googleapis.com/v1/projects/ksproductgallery/databases/(default)/documents/products";
         private readonly string storageBucket =
-            "YOUR_BUCKET_NAME.appspot.com";
+            "ksproductgallery.appspot.com";
 
         private readonly string cacheJsonPath =
             Path.Combine(FileSystem.AppDataDirectory, "product_cache.json");
