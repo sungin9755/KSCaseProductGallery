@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KSCaseProductGallery.AddProductPage"
+             Title="제품 추가">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="제품명" />
+            <Entry x:Name="ProductNameEntry" Placeholder="제품명을 입력하세요" />
+
+            <Label Text="코드명" />
+            <Entry x:Name="CodeNameEntry" Placeholder="코드명을 입력하세요" />
+
+            <Label Text="종류" />
+            <Entry x:Name="TypeEntry" Placeholder="종류를 입력하세요" />
+
+            <Label Text="용량" />
+            <Entry x:Name="CapacityEntry" Placeholder="예: 8 ml" />
+
+            <Label Text="사이즈" />
+            <Entry x:Name="SizeEntry" Placeholder="예: 75.0*18.8" />
+
+            <Label Text="설명" />
+            <Editor x:Name="DescriptionEditor" Placeholder="설명을 입력하세요" AutoSize="TextChanges" />
+
+            <Button Text="이미지 선택" Clicked="OnPickImageClicked" />
+            <Label x:Name="ImageFileNameLabel" Text="선택된 파일 없음" FontSize="12" />
+
+            <Button Text="제품 등록" Clicked="OnAddProductClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

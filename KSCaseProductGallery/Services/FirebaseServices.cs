@@ -42,10 +42,11 @@ namespace KSCaseProductGallery.Services
                     var product = new Product
                     {
                         id = element.GetProperty("name").GetString()?.Split('/')[^1],
-                        name = fields.GetProperty("name").GetProperty("stringValue").GetString(),
-                        year = fields.GetProperty("year").GetProperty("stringValue").GetString(),
-                        material = fields.GetProperty("material").GetProperty("stringValue").GetString(),
-                        feature = fields.GetProperty("feature").GetProperty("stringValue").GetString(),
+                        productName = fields.GetProperty("productName").GetProperty("stringValue").GetString(),
+                        codeName = fields.GetProperty("codeName").GetProperty("stringValue").GetString(),
+                        type = fields.GetProperty("type").GetProperty("stringValue").GetString(),
+                        capacity = fields.GetProperty("capacity").GetProperty("stringValue").GetString(),
+                        size = fields.GetProperty("size").GetProperty("stringValue").GetString(),
                         description = fields.GetProperty("description").GetProperty("stringValue").GetString(),
                         image = fields.GetProperty("image").GetProperty("stringValue").GetString()
                     };
@@ -146,10 +147,11 @@ namespace KSCaseProductGallery.Services
             {
                 fields = new
                 {
-                    name = new { stringValue = product.name },
-                    year = new { stringValue = product.year },
-                    material = new { stringValue = product.material },
-                    feature = new { stringValue = product.feature },
+                    productName = new { stringValue = product.productName },
+                    codeName = new { stringValue = product.codeName },
+                    type = new { stringValue = product.type },
+                    capacity = new { stringValue = product.capacity },
+                    size = new { stringValue = product.size },
                     description = new { stringValue = product.description },
                     image = new { stringValue = imageUrl }
                 }

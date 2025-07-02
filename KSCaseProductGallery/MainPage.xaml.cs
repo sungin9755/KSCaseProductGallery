@@ -39,7 +39,7 @@ namespace KSCaseProductGallery
             if (e.CurrentSelection.FirstOrDefault() is Product selected)
             {
                 // TODO: 상세 페이지 이동 또는 우측 정보 표시
-                Console.WriteLine($"선택된 제품: {selected.name}");
+                Console.WriteLine($"선택된 제품: {selected.productName}");
             }
         }
 
