@@ -1,12 +1,29 @@
 ﻿using KSCaseProductGallery.Services;
+using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui.Extensions;
+using System.Windows.Input;
 
 namespace KSCaseProductGallery
 {
     public partial class MainPage : ContentPage
     {
+        public ICommand ShowAdminPromptCommand { get; }
+
+        private int _adminTapCount = 0;
+        private DateTime _lastTapTime = DateTime.MinValue;
+
         public MainPage()
         {
             InitializeComponent();
+            ShowAdminPromptCommand = new Command(async () =>
+            {
+                string result = await DisplayPromptAsync("관리자 로그인", "비밀번호를 입력하세요", "확인", "취소", "비밀번호", -1, Keyboard.Text);
+                if (AdminState.Instance.Login(result))
+                    await DisplayAlert("성공", "관리자 로그인 성공", "확인");
+                else
+                    await DisplayAlert("실패", "비밀번호가 틀렸습니다.", "확인");
+            });
+            BindingContext = this;
         }
 
         protected override async void OnAppearing()
@@ -38,59 +55,32 @@ namespace KSCaseProductGallery
         {
             if (e.CurrentSelection.FirstOrDefault() is Product selected)
             {
-                // TODO: 상세 페이지 이동 또는 우측 정보 표시
-                Console.WriteLine($"선택된 제품: {selected.productName}");
+                // 팝업으로 상세 페이지 표시
+                var popup = new ProductDetailPage(selected);
+                this.ShowPopup(popup);
+                ProductCollection.SelectedItem = null;
             }
         }
 
-        /*
-        private void OnCounterClicked(object sender, EventArgs e)
+        private void OnAdminAreaTapped(object sender, EventArgs e)
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
+            var now = DateTime.Now;
+            if ((now - _lastTapTime).TotalSeconds < 1)
+            {
+                _adminTapCount++;
+            }
             else
-                CounterBtn.Text = $"Clicked {count} times";
+            {
+                _adminTapCount = 1;
+            }
+            _lastTapTime = now;
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            if (_adminTapCount >= 3)
+            {
+                _adminTapCount = 0;
+                ShowAdminPromptCommand.Execute(null);
+            }
         }
-        */
-
-        //private async void GetRawData()
-        //{
-        //    Console.WriteLine("[Info] Entered GetRawData()");
-
-        //    try
-        //    {
-        //        if (ConnectivityHelper.IsInternetAvailable())
-        //        {
-        //            var url = "https://raw.githubusercontent.com/sungin9755/cosmetic_catalog/main/product.json";
-        //            await new ProductDownloader().DownloadProductImagesAsync(url);
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("[Error] 인터넷 연결이 없습니다.");
-        //            return;
-        //        }
-
-        //        var products = ProductStore.Instance.Products;
-
-        //        if (products != null && products.Count > 0)
-        //        {
-        //            ProductCollection.ItemsSource = ProductStore.Instance.Products;
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("[Error] 제품 데이터가 비어 있습니다.");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"[Error] 제품 데이터 다운로드 중 오류 발생: {ex.Message}");
-        //        await DisplayAlert("오류", "제품 데이터를 불러오는 중 오류가 발생했습니다.", "확인");
-        //    }
-        //}
     }
 
 }

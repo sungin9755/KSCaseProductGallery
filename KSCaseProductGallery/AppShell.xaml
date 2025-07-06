@@ -1,18 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Shell
     x:Class="KSCaseProductGallery.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:KSCaseProductGallery"
-    Shell.FlyoutBehavior="Flyout"
+    Shell.FlyoutBehavior="Disabled"
     Title="KSCaseProductGallery">
 
-    <FlyoutItem Title="제품 추가" Icon="plus.png">
+    <FlyoutItem Title="관리자 로그인" x:Name="AdminLoginMenu">
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="제품 추가" x:Name="AddProductMenu" Icon="plus.png" IsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate local:AddProductPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="관리자 로그인" x:Name="AdminLoginMenu" Clicked="OnAdminLoginClicked" />
-    <FlyoutItem Title="로그아웃" x:Name="AdminLogoutMenu" Clicked="OnAdminLogoutClicked" IsVisible="False" />
+    <FlyoutItem Title="로그아웃" x:Name="AdminLogoutMenu" IsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+    </FlyoutItem>
 
     <ShellContent
         Title="Home"

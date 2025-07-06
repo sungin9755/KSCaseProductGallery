@@ -1,29 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="KSCaseProductGallery.MainPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-    <CollectionView x:Name="ProductCollection"
-                    SelectionMode="Single"
-                    SelectionChanged="OnProductSelected">
-        <CollectionView.ItemsLayout>
-            <GridItemsLayout Orientation="Vertical" Span="2" />
-        </CollectionView.ItemsLayout>
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <Border Padding="5" Margin="5">
-                    <StackLayout>
-                        <Image Source="{Binding LocalImagePath}"
-                           Aspect="AspectFill"
-                           HeightRequest="180"
-                           WidthRequest="180" />
-                        <Label Text="{Binding name}" FontSize="14"
-                           HorizontalTextAlignment="Center"
-                           LineBreakMode="TailTruncation"/>
-                    </StackLayout>
-                </Border>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+        <!-- 1. CollectionView: Grid.Row="0" -->
+        <CollectionView x:Name="ProductCollection"
+                        Grid.Row="0"
+                        SelectionMode="Single"
+                        SelectionChanged="OnProductSelected"
+                        HeightRequest="80">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="2" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="5" Margin="5">
+                        <StackLayout>
+                            <Image Source="{Binding LocalImagePath}"
+                                   Aspect="AspectFill"
+                                   HeightRequest="60"
+                                   WidthRequest="60" />
+                            <Label Text="{Binding name}" FontSize="14"
+                                   HorizontalTextAlignment="Center"
+                                   LineBreakMode="TailTruncation"/>
+                        </StackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
+        <!-- 2. BoxView: Grid.Row="0" (CollectionView 위에 겹침) -->
+        <BoxView Grid.Row="0"
+                 BackgroundColor="Transparent"
+                 HorizontalOptions="Center"
+                 VerticalOptions="Start"
+                 WidthRequest="300"
+                 HeightRequest="80"
+                 InputTransparent="False">
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnAdminAreaTapped" />
+            </BoxView.GestureRecognizers>
+        </BoxView>
+    </Grid>
 </ContentPage>

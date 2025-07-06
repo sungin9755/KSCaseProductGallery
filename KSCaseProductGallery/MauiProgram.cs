@@ -10,7 +10,7 @@ namespace KSCaseProductGallery
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseMauiCommunityToolkit()
+                .UseMauiCommunityToolkit() // 이 줄이 반드시 필요합니다.
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

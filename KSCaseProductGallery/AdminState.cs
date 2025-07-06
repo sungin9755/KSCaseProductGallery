@@ -7,7 +7,7 @@ namespace KSCaseProductGallery
 
         public bool IsAdmin { get; private set; }
 
-        private const string AdminPassword = "your_password_here"; // 원하는 비밀번호로 변경
+        private const string AdminPassword = "1234"; // 원하는 비밀번호로 변경
 
         public bool Login(string password)
         {

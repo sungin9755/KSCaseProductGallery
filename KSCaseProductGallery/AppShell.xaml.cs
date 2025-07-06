@@ -15,6 +15,7 @@
                 await DisplayAlert("성공", "관리자 로그인 성공", "확인");
                 AdminLoginMenu.IsVisible = false;
                 AdminLogoutMenu.IsVisible = true;
+                AddProductMenu.IsVisible = true;
             }
             else
             {
@@ -27,6 +28,7 @@
             AdminState.Instance.Logout();
             AdminLoginMenu.IsVisible = true;
             AdminLogoutMenu.IsVisible = false;
+            AddProductMenu.IsVisible = false;
         }
     }
 }
