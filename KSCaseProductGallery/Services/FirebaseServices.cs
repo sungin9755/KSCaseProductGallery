@@ -9,8 +9,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-
-//
 namespace KSCaseProductGallery.Services
 {
     public class FirebaseServices
@@ -162,6 +160,53 @@ namespace KSCaseProductGallery.Services
             var response = await httpClient.PostAsync(firestoreBaseUrl, content);
             response.EnsureSuccessStatusCode();
             Console.WriteLine("[Firebase] AddProductAsync 성공");
+        }
+
+        /// <summary>
+        /// Firestore의 제품 문서와 Firebase Storage의 이미지를 함께 삭제
+        /// </summary>
+        public async Task DeleteProductAsync(Product product)
+        {
+            try
+            {
+                // 1. Firestore 문서 삭제
+                if (string.IsNullOrWhiteSpace(product.id))
+                    throw new ArgumentException("제품 ID가 없습니다.");
+
+                string docUrl = $"{firestoreBaseUrl}/{product.id}";
+                var firestoreResponse = await httpClient.DeleteAsync(docUrl);
+                firestoreResponse.EnsureSuccessStatusCode();
+
+                // 2. Firebase Storage 이미지 삭제
+                if (!string.IsNullOrWhiteSpace(product.image))
+                {
+                    // 업로드 시 name=img/{파일명}으로 저장했으므로, 파일명만 추출
+                    var fileName = Path.GetFileName(product.image);
+                    string storageUrl = $"https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/img%2F{Uri.EscapeDataString(fileName)}";
+                    var storageRequest = new HttpRequestMessage(HttpMethod.Delete, storageUrl);
+                    var storageResponse = await httpClient.SendAsync(storageRequest);
+                    // Storage 삭제는 권한 설정에 따라 실패할 수 있으니, 실패해도 앱이 중단되지 않게 처리
+                    if (!storageResponse.IsSuccessStatusCode)
+                        Console.WriteLine($"[Warning] 이미지 파일 삭제 실패: {storageResponse.StatusCode}");
+                }
+
+                // 3. ProductStore에서 삭제
+                var list = ProductStore.Instance.Products;
+                var toRemove = list.FirstOrDefault(p => p.id == product.id);
+                if (toRemove != null)
+                {
+                    list.Remove(toRemove);
+                    // 캐시 갱신
+                    var cacheJson = JsonSerializer.Serialize(list);
+                    File.WriteAllText(cacheJsonPath, cacheJson);
+                }
+
+                Console.WriteLine("[Firebase] DeleteProductAsync 성공");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Error] DeleteProductAsync: {ex.Message}");
+            }
         }
     }
 }
