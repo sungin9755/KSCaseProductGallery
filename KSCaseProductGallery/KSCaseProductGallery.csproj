@@ -57,6 +57,7 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<None Remove="제품리스트 업로드%2825.06.18%29.xlsx" />
 
 		<!-- Firebase Reference -->
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -70,6 +71,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="AddProductPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="AddProductPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ProductDetailPage.xaml">

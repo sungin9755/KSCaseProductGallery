@@ -18,6 +18,7 @@ namespace KSCaseProductGallery
         public string? size { get; set; }     // ex: "75.0*18.8" (추천: dimensions, dimension, sizeInfo 등도 가능)
         public string? description { get; set; }
         public string? image { get; set; }
+        public string? category { get; set; } // 시트(카테고리)명 추가
 
         public string LocalImagePath =>
             Path.Combine(FileSystem.AppDataDirectory, "img", Path.GetFileName(image ?? string.Empty));

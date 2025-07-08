@@ -31,6 +31,8 @@ namespace KSCaseProductGallery
             CapacityLabel.Text = $"용량: {_product.capacity}";
             SizeLabel.Text = $"사이즈: {_product.size}";
             DescriptionLabel.Text = _product.description;
+            // 필요하다면 카테고리도 표시
+            // CategoryLabel.Text = $"카테고리: {_product.category}";
         }
 
         private void OnSizeChanged(object? sender, EventArgs e)

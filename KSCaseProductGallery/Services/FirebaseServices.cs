@@ -151,7 +151,8 @@ namespace KSCaseProductGallery.Services
                     capacity = new { stringValue = product.capacity },
                     size = new { stringValue = product.size },
                     description = new { stringValue = product.description },
-                    image = new { stringValue = imageUrl }
+                    image = new { stringValue = imageUrl },
+                    category = new { stringValue = product.category } // ← 추가
                 }
             };
 
