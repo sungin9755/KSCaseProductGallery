@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:KSCaseProductGallery"
              x:Class="KSCaseProductGallery.MainPage">
 
-    <Grid>
+    <Grid RowDefinitions="Auto,*">
         <!-- 탭 영역 -->
         <HorizontalStackLayout x:Name="CategoryTabBar"
                                Spacing="8"
@@ -61,13 +61,8 @@
                         <DataTemplate>
                             <Border Padding="5" Margin="5">
                                 <StackLayout>
-                                    <Image Source="{Binding LocalImagePath}"
-                                           Aspect="AspectFill"
-                                           HeightRequest="180"
-                                           WidthRequest="180" />
-                                    <Label Text="{Binding productName}" FontSize="14"
-                                           HorizontalTextAlignment="Center"
-                                           LineBreakMode="TailTruncation"/>
+                                    <Image Source="{Binding LocalImagePath}" Aspect="AspectFill" HeightRequest="180" WidthRequest="180" />
+                                    <Label Text="{Binding productName}" FontSize="14" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
                                 </StackLayout>
                             </Border>
                         </DataTemplate>

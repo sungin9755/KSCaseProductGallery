@@ -46,10 +46,11 @@ namespace KSCaseProductGallery
                 await DisplayAlert("오프라인", "로컬 캐시에서 데이터를 불러옵니다.", "확인");
             }
 
-            // 카테고리 목록 추출
+            // 카테고리 목록 추출 및 UI 갱신
             _categories = ProductStore.Instance.Products
                 .Select(p => p.category)
                 .Where(c => !string.IsNullOrEmpty(c))
+                .Select(c => c!) // null 아님을 명시
                 .Distinct()
                 .ToList();
 
@@ -58,7 +59,14 @@ namespace KSCaseProductGallery
 
             UpdateProductList();
             UpdateCategoryTabs();
-            // 탭 UI 갱신 필요
+
+            Console.WriteLine($"[DEBUG] 제품 개수: {ProductStore.Instance.Products.Count}");
+            foreach (var p in ProductStore.Instance.Products)
+                Console.WriteLine($"[DEBUG] {p.productName} / {p.category}");
+
+            Console.WriteLine($"[DEBUG] 카테고리 개수: {_categories.Count}");
+            foreach (var c in _categories)
+                Console.WriteLine($"[DEBUG] 카테고리: {c}");
         }
 
         private void UpdateProductList()
