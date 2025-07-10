@@ -25,11 +25,18 @@ namespace KSCaseProductGallery
         private void BindProduct()
         {
             ProductImage.Source = _product.LocalImagePath;
-            ProductNameLabel.Text = _product.productName;
-            CodeNameLabel.Text = $"코드명: {_product.codeName}";
-            TypeLabel.Text = $"타입: {_product.type}";
-            CapacityLabel.Text = $"용량: {_product.capacity}";
-            SizeLabel.Text = $"사이즈: {_product.size}";
+            ProductNameLabel.Text = $"Name: { _product.productName}";
+            CodeNameLabel.Text = $"{_product.codeName}";
+            TypeLabel.Text = $"Type: {_product.type}";
+            if(string.IsNullOrEmpty(_product.capacity))
+            {
+                CapacityLabel.Text = "Capacity: N/A"; // 용량이 없을 경우 표시
+            }
+            else
+            {
+                CapacityLabel.Text = $"Capacity: {_product.capacity} ml";
+            }
+            SizeLabel.Text = $"Size: {_product.size}";
             DescriptionLabel.Text = _product.description;
             // 필요하다면 카테고리도 표시
             // CategoryLabel.Text = $"카테고리: {_product.category}";

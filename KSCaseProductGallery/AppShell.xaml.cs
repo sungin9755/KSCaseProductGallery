@@ -6,6 +6,7 @@
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(AddProductPage), typeof(AddProductPage));
+            Routing.RegisterRoute(nameof(EditProductPage), typeof(EditProductPage));
         }
 
         private async void OnAdminLoginClicked(object sender, EventArgs e)

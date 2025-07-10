@@ -69,8 +69,8 @@
                              Grid.Row="1" Grid.Column="0"
                              Grid.RowSpan="1" Grid.ColumnSpan="1"
                              Spacing="8">
-                    <Label x:Name="ProductNameLabel" FontAttributes="Bold" FontSize="22"/>
-                    <Label x:Name="CodeNameLabel" FontSize="16"/>
+                    <Label x:Name="CodeNameLabel" FontAttributes="Bold" FontSize="22"/>
+                    <Label x:Name="ProductNameLabel" FontSize="16"/>
                     <Label x:Name="TypeLabel" FontSize="16"/>
                     <Label x:Name="CapacityLabel" FontSize="16"/>
                     <Label x:Name="SizeLabel" FontSize="16"/>

@@ -221,5 +221,47 @@ namespace KSCaseProductGallery.Services
                 Console.WriteLine($"[Error] DeleteProductAsync: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// 제품 정보 수정: Firestore의 문서 필드 업데이트
+        /// </summary>
+        public async Task UpdateProductAsync(Product product, FileResult? newPhoto = null)
+        {
+            string? imageUrl = product.image;
+            if (newPhoto != null)
+            {
+                imageUrl = await UploadImageAsync(newPhoto);
+                if (string.IsNullOrEmpty(imageUrl))
+                {
+                    await Application.Current.MainPage.DisplayAlert("오류", "이미지 업로드에 실패했습니다.", "확인");
+                    return;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(product.id))
+                throw new ArgumentException("제품 ID가 없습니다.");
+
+            var request = new
+            {
+                fields = new
+                {
+                    productName = new { stringValue = product.productName ?? "" },
+                    codeName = new { stringValue = product.codeName ?? "" },
+                    type = new { stringValue = product.type ?? "" },
+                    capacity = new { stringValue = product.capacity ?? "" },
+                    size = new { stringValue = product.size ?? "" },
+                    description = new { stringValue = product.description ?? "" },
+                    image = new { stringValue = imageUrl ?? "" },
+                    category = new { stringValue = product.category ?? "" }
+                }
+            };
+
+            var json = JsonSerializer.Serialize(request);
+            using var content = new StringContent(json, Encoding.UTF8, "application/json");
+            string docUrl = $"{firestoreBaseUrl}/{product.id}";
+            var response = await httpClient.PatchAsync(docUrl, content);
+            response.EnsureSuccessStatusCode();
+            Console.WriteLine("[Firebase] UpdateProductAsync 성공");
+        }
     }
 }

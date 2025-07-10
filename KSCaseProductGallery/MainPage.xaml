@@ -4,71 +4,67 @@
              xmlns:local="clr-namespace:KSCaseProductGallery"
              x:Class="KSCaseProductGallery.MainPage">
 
-    <Grid RowDefinitions="Auto,*">
-        <!-- 탭 영역 -->
+    <Grid RowDefinitions="Auto,Auto,*">
+        <!-- 상단 바 -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Padding="10">
+            <!-- 로그아웃 버튼 -->
+            <Button x:Name="LogoutButton"
+                    Text="로그아웃"
+                    IsVisible="{Binding Source={x:Static local:AdminState.Instance}, Path=IsAdmin}"
+                    Clicked="OnLogoutClicked"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start" />
+
+            <!-- 중앙 타이틀 -->
+            <Label Text="제품 갤러리"
+                   Grid.Column="1"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontAttributes="Bold"
+                   FontSize="20"
+                   x:Name="AdminTapArea">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnAdminAreaTapped" NumberOfTapsRequired="1"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+            <!-- 제품 추가 버튼 -->
+            <Button x:Name="AddProductButton"
+                    Text="제품 추가"
+                    IsVisible="{Binding Source={x:Static local:AdminState.Instance}, Path=IsAdmin}"
+                    Clicked="OnAddProductClicked"
+                    Grid.Column="2"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End" />
+        </Grid>
+
+        <!-- 카테고리 탭 -->
         <HorizontalStackLayout x:Name="CategoryTabBar"
+                               Grid.Row="1"
                                Spacing="8"
                                Padding="10"
-                               Grid.Row="0">
+                               VerticalOptions="Center">
             <!-- 동적으로 Button을 추가할 예정 -->
         </HorizontalStackLayout>
 
-        <!-- 기존 상단 바와 제품 목록 등은 아래에 배치 -->
-        <Grid RowDefinitions="Auto,*" Grid.Row="1">
-            <!-- 상단 바: 로그아웃(왼쪽), 중앙(로고/제목), 제품 추가(오른쪽) -->
-            <Grid RowDefinitions="Auto,*">
-                <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Padding="10">
-                    <!-- 로그아웃 버튼 (왼쪽 상단) -->
-                    <Button x:Name="LogoutButton"
-                            Text="로그아웃"
-                            IsVisible="{Binding Source={x:Static local:AdminState.Instance}, Path=IsAdmin}"
-                            Clicked="OnLogoutClicked"
-                            VerticalOptions="Center"
-                            HorizontalOptions="Start" />
-
-                    <!-- 중앙 타이틀(원하면 로고/제목 등) -->
-                    <Label Text="제품 갤러리"
-                           Grid.Column="1"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center"
-                           FontAttributes="Bold"
-                           FontSize="20"
-                           x:Name="AdminTapArea">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnAdminAreaTapped" NumberOfTapsRequired="1"/>
-                        </Label.GestureRecognizers>
-                    </Label>
-
-                    <!-- 제품 추가 버튼 (오른쪽 상단) -->
-                    <Button x:Name="AddProductButton"
-                            Text="제품 추가"
-                            IsVisible="{Binding Source={x:Static local:AdminState.Instance}, Path=IsAdmin}"
-                            Clicked="OnAddProductClicked"
-                            Grid.Column="2"
-                            VerticalOptions="Center"
-                            HorizontalOptions="End" />
-                </Grid>
-
-                <!-- 제품 목록 -->
-                <CollectionView x:Name="ProductCollection"
-                                Grid.Row="1"
-                                SelectionMode="Single"
-                                SelectionChanged="OnProductSelected">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="2" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Border Padding="5" Margin="5">
-                                <StackLayout>
-                                    <Image Source="{Binding LocalImagePath}" Aspect="AspectFill" HeightRequest="180" WidthRequest="180" />
-                                    <Label Text="{Binding productName}" FontSize="14" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
-                                </StackLayout>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </Grid>
-        </Grid>
+        <!-- 제품 목록 -->
+        <CollectionView x:Name="ProductCollection"
+                        Grid.Row="2"
+                        SelectionMode="Single"
+                        SelectionChanged="OnProductSelected">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="3" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="5" Margin="5">
+                        <StackLayout>
+                            <Image Source="{Binding LocalImagePath}" Aspect="AspectFill" HeightRequest="180" WidthRequest="180" />
+                            <Label Text="{Binding codeName}" FontSize="14" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                        </StackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>

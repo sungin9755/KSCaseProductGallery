@@ -73,6 +73,7 @@ namespace KSCaseProductGallery
         {
             ProductCollection.ItemsSource = ProductStore.Instance.Products
                 .Where(p => p.category == _selectedCategory)
+                .OrderBy(p => p.codeName) // 코드명 기준 정렬
                 .ToList();
         }
 
@@ -81,10 +82,12 @@ namespace KSCaseProductGallery
             CategoryTabBar.Children.Clear();
             foreach (var category in _categories)
             {
+                var isSelected = category == _selectedCategory;
                 var btn = new Button
                 {
                     Text = category,
-                    BackgroundColor = category == _selectedCategory ? Colors.LightGray : Colors.Transparent,
+                    BackgroundColor = isSelected ? Colors.Gray : Colors.Black,
+                    TextColor = Colors.White,
                     Padding = new Thickness(12, 4),
                     CornerRadius = 12
                 };
@@ -108,10 +111,22 @@ namespace KSCaseProductGallery
         {
             if (e.CurrentSelection.FirstOrDefault() is Product selected)
             {
-                // 팝업으로 상세 페이지 표시
-                var popup = new ProductDetailPage(selected);
-                this.ShowPopup(popup);
                 ProductCollection.SelectedItem = null;
+
+                if (AdminState.Instance.IsAdmin)
+                {
+                    // 관리자: 수정 페이지로 이동
+                    Shell.Current.GoToAsync(nameof(EditProductPage), true, new Dictionary<string, object>
+                    {
+                        { "product", selected }
+                    });
+                }
+                else
+                {
+                    // 일반 사용자: 상세 팝업
+                    var popup = new ProductDetailPage(selected);
+                    this.ShowPopup(popup);
+                }
             }
         }
 
