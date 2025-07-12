@@ -30,8 +30,10 @@ namespace KSCaseProductGallery.Services
         {
             try
             {
+                Console.WriteLine($"[DEBUG] firestoreBaseUrl: {firestoreBaseUrl}");
                 var json = await httpClient.GetStringAsync(firestoreBaseUrl);
-                Console.WriteLine(json);
+                Console.WriteLine($"[DEBUG] Firestore 응답: {json}");
+
                 using var doc = JsonDocument.Parse(json);
 
                 var list = new List<Product>();
@@ -48,8 +50,10 @@ namespace KSCaseProductGallery.Services
                         size = fields.GetProperty("size").GetProperty("stringValue").GetString(),
                         description = fields.GetProperty("description").GetProperty("stringValue").GetString(),
                         image = fields.GetProperty("image").GetProperty("stringValue").GetString(),
-                        category = fields.GetProperty("category").GetProperty("stringValue").GetString() // ★ 추가
+                        category = fields.GetProperty("category").GetProperty("stringValue").GetString()
                     };
+
+                    Console.WriteLine($"[DEBUG] Product 파싱: {product.productName} / {product.category} / {product.codeName}");
 
                     // 이미지 로컬 다운로드
                     if (!string.IsNullOrWhiteSpace(product.image))
@@ -62,14 +66,16 @@ namespace KSCaseProductGallery.Services
 
                         if (!File.Exists(localPath))
                         {
+                            Console.WriteLine($"[DEBUG] 이미지 다운로드: {product.image}");
                             var imgData = await httpClient.GetByteArrayAsync(product.image);
                             File.WriteAllBytes(localPath, imgData);
                         }
-                        product.image = localPath;
                     }
 
                     list.Add(product);
                 }
+
+                Console.WriteLine($"[DEBUG] 파싱된 제품 수: {list.Count}");
 
                 // 캐시 저장
                 var cacheJson = JsonSerializer.Serialize(list);
@@ -79,6 +85,7 @@ namespace KSCaseProductGallery.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"[Error] FetchAndCacheProductsAsync: {ex.Message}");
+                Console.WriteLine($"[Error] StackTrace: {ex.StackTrace}");
             }
         }
 

@@ -16,52 +16,36 @@ namespace KSCaseProductGallery
             this.SizeChanged += OnSizeChanged;
 
             // BoxView(투명영역) 클릭 시 팝업 닫기
-            DismissArea.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() => this.CloseAsync()) // 'this.CloseAsync()'로 수정
-            });
+            //DismissArea.GestureRecognizers.Add(new TapGestureRecognizer
+            //{
+            //    Command = new Command(() => this.CloseAsync())
+            //});
         }
 
         private void BindProduct()
         {
-            ProductImage.Source = _product.LocalImagePath;
+            if (!string.IsNullOrEmpty(_product.LocalImagePath) && File.Exists(_product.LocalImagePath))
+                ProductImage.Source = _product.LocalImagePath;
+            else if (!string.IsNullOrEmpty(_product.image))
+                ProductImage.Source = _product.image;
+            else
+                ProductImage.Source = null;
+
             ProductNameLabel.Text = $"Name: { _product.productName}";
             CodeNameLabel.Text = $"{_product.codeName}";
             TypeLabel.Text = $"Type: {_product.type}";
-            if(string.IsNullOrEmpty(_product.capacity))
-            {
-                CapacityLabel.Text = "Capacity: N/A"; // 용량이 없을 경우 표시
-            }
-            else
-            {
-                CapacityLabel.Text = $"Capacity: {_product.capacity} ml";
-            }
+            CapacityLabel.Text = string.IsNullOrEmpty(_product.capacity)
+                ? "Capacity: N/A"
+                : $"Capacity: {_product.capacity} ml";
             SizeLabel.Text = $"Size: {_product.size}";
             DescriptionLabel.Text = _product.description;
-            // 필요하다면 카테고리도 표시
-            // CategoryLabel.Text = $"카테고리: {_product.category}";
         }
 
         private void OnSizeChanged(object? sender, EventArgs e)
         {
-            if (Width > Height)
-            {
-                // Landscape
-                VisualStateManager.GoToState(RootGrid, "Landscape");
-                Grid.SetRow(ProductImage, 0);
-                Grid.SetColumn(ProductImage, 0);
-                Grid.SetRow(InfoStack, 0);
-                Grid.SetColumn(InfoStack, 1);
-            }
-            else
-            {
-                // Portrait
-                VisualStateManager.GoToState(RootGrid, "Portrait");
-                Grid.SetRow(ProductImage, 0);
-                Grid.SetColumn(ProductImage, 0);
-                Grid.SetRow(InfoStack, 1);
-                Grid.SetColumn(InfoStack, 0);
-            }
+            // 가로가 세로보다 크면 Landscape, 아니면 Portrait
+            var orientation = this.Width > this.Height ? "Landscape" : "Portrait";
+            VisualStateManager.GoToState(ContentGrid, orientation);
         }
     }
 }

@@ -51,7 +51,8 @@
         <CollectionView x:Name="ProductCollection"
                         Grid.Row="2"
                         SelectionMode="Single"
-                        SelectionChanged="OnProductSelected">
+                        SelectionChanged="OnProductSelected"
+                        Scrolled="OnProductCollectionScrolled">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical" Span="3" />
             </CollectionView.ItemsLayout>
@@ -59,7 +60,7 @@
                 <DataTemplate>
                     <Border Padding="5" Margin="5">
                         <StackLayout>
-                            <Image Source="{Binding LocalImagePath}" Aspect="AspectFill" HeightRequest="180" WidthRequest="180" />
+                            <Image Source="{Binding ., Converter={StaticResource ProductImageConverter}}" Aspect="AspectFill" HeightRequest="180" WidthRequest="180" />
                             <Label Text="{Binding codeName}" FontSize="14" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation" />
                         </StackLayout>
                     </Border>

@@ -8,6 +8,8 @@ public partial class EditProductPage : ContentPage
 {
     private Product? _product;
     private FileResult? _selectedImage;
+    private bool _isImagePicked = false; // 이미지가 새로 선택되었는지 여부
+    private string? _originalImageUrl; // Firestore에 저장된 원래의 이미지 URL
 
     public Product? Product
     {
@@ -15,18 +17,18 @@ public partial class EditProductPage : ContentPage
         set
         {
             _product = value;
-            if (_product != null && IsLoaded)
+            if (_product != null && _isLoaded)
                 LoadProduct();
         }
     }
 
-    private bool IsLoaded = false;
+    private bool _isLoaded = false;
 
     public EditProductPage()
     {
         InitializeComponent();
         BindingContext = this;
-        IsLoaded = true;
+        _isLoaded = true;
         if (_product != null)
             LoadProduct();
     }
@@ -43,21 +45,27 @@ public partial class EditProductPage : ContentPage
         CategoryEntry.Text = _product.category;
         DescriptionEditor.Text = _product.description;
 
-        if (!string.IsNullOrEmpty(_product.LocalImagePath))
+        if (!string.IsNullOrEmpty(_product.image) && _product.image.StartsWith("http", StringComparison.OrdinalIgnoreCase))
         {
-            ProductImagePreview.Source = _product.LocalImagePath;
-            ImageFileNameLabel.Text = System.IO.Path.GetFileName(_product.LocalImagePath);
-        }
-        else if (!string.IsNullOrEmpty(_product.image))
-        {
+            // Firestore의 원본 이미지 URL
             ProductImagePreview.Source = _product.image;
             ImageFileNameLabel.Text = System.IO.Path.GetFileName(_product.image);
+        }
+        else if (!string.IsNullOrEmpty(_product.LocalImagePath) && File.Exists(_product.LocalImagePath))
+        {
+            // 로컬에 다운로드된 이미지
+            ProductImagePreview.Source = _product.LocalImagePath;
+            ImageFileNameLabel.Text = System.IO.Path.GetFileName(_product.LocalImagePath);
         }
         else
         {
             ProductImagePreview.Source = null;
             ImageFileNameLabel.Text = "";
         }
+
+        _originalImageUrl = _product.image; // Firestore에 저장된 원래의 이미지 URL 저장
+        _selectedImage = null; // 제품 로드시 초기화
+        _isImagePicked = false; // 플래그도 초기화
     }
 
     private async void OnPickImageClicked(object sender, EventArgs e)
@@ -70,6 +78,7 @@ public partial class EditProductPage : ContentPage
         if (result != null)
         {
             _selectedImage = result;
+            _isImagePicked = true; // 실제로 유저가 이미지를 선택한 경우만 true
             ImageFileNameLabel.Text = result.FileName;
             ProductImagePreview.Source = ImageSource.FromFile(result.FullPath);
         }
@@ -87,7 +96,16 @@ public partial class EditProductPage : ContentPage
         _product.category = CategoryEntry.Text;
         _product.description = DescriptionEditor.Text;
 
-        await new FirebaseServices().UpdateProductAsync(_product, _selectedImage);
+        // 이미지 경로 처리
+        if (!_isImagePicked)
+        {
+            // 유저가 이미지를 새로 선택하지 않았다면, Firestore에 저장할 값은 원래의 image URL만 유지
+            _product.image = _originalImageUrl;
+        }
+
+        await new FirebaseServices().UpdateProductAsync(_product, _isImagePicked ? _selectedImage : null);
+        _selectedImage = null;
+        _isImagePicked = false;
         await DisplayAlert("완료", "제품 정보가 수정되었습니다.", "확인");
         await Shell.Current.GoToAsync("..");
     }

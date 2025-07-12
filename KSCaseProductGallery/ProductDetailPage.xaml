@@ -1,82 +1,89 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-               x:Class="KSCaseProductGallery.ProductDetailPage">
-    <Grid BackgroundColor="Transparent">
-        <BoxView BackgroundColor="Transparent"
-                 InputTransparent="False"
-                 x:Name="DismissArea">
-            <BoxView.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding DismissCommand}" />
-            </BoxView.GestureRecognizers>
-        </BoxView>
-        <Border BackgroundColor="#CCFFFFFF" Padding="24" StrokeShape="RoundRectangle 16"
-                HorizontalOptions="Center" VerticalOptions="Center">
-            <Grid x:Name="RootGrid">
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="KSCaseProductGallery.ProductDetailPage"
+    BackgroundColor="White">
+
+    <Grid x:Name="RootGrid"
+          Padding="32"
+          RowDefinitions="Auto"
+          ColumnDefinitions="Auto"
+          VerticalOptions="Fill"
+          HorizontalOptions="Fill"
+          BackgroundColor="White">
+        <Frame
+            Padding="32"
+            CornerRadius="24"
+            BackgroundColor="White"
+            VerticalOptions="Fill"
+            HorizontalOptions="Fill">
+            <Grid x:Name="ContentGrid"
+                  RowDefinitions="Auto,Auto"
+                  ColumnDefinitions="Auto"
+                  Margin="0">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="OrientationStates">
                         <VisualState x:Name="Portrait">
                             <VisualState.Setters>
-                                <Setter TargetName="RootGrid" Property="RowDefinitions">
-                                    <Setter.Value>
-                                        <RowDefinitionCollection>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="*" />
-                                        </RowDefinitionCollection>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="RootGrid" Property="ColumnDefinitions">
-                                    <Setter.Value>
-                                        <ColumnDefinitionCollection>
-                                            <ColumnDefinition Width="*" />
-                                        </ColumnDefinitionCollection>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="RowDefinitions" TargetName="ContentGrid" Value="Auto,Auto"/>
+                                <Setter Property="ColumnDefinitions" TargetName="ContentGrid" Value="Auto"/>
+                                <Setter Property="Grid.Row" TargetName="ProductImage" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="ProductImage" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="InfoStack" Value="1"/>
+                                <Setter Property="Grid.Column" TargetName="InfoStack" Value="0"/>
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="Landscape">
                             <VisualState.Setters>
-                                <Setter TargetName="RootGrid" Property="RowDefinitions">
-                                    <Setter.Value>
-                                        <RowDefinitionCollection>
-                                            <RowDefinition Height="*" />
-                                        </RowDefinitionCollection>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter TargetName="RootGrid" Property="ColumnDefinitions">
-                                    <Setter.Value>
-                                        <ColumnDefinitionCollection>
-                                            <ColumnDefinition Width="2*" />
-                                            <ColumnDefinition Width="3*" />
-                                        </ColumnDefinitionCollection>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="RowDefinitions" TargetName="ContentGrid" Value="Auto"/>
+                                <Setter Property="ColumnDefinitions" TargetName="ContentGrid" Value="Auto,Auto"/>
+                                <Setter Property="Grid.Row" TargetName="ProductImage" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="ProductImage" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="InfoStack" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="InfoStack" Value="1"/>
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
 
+                <!-- 제품 이미지 -->
                 <Image x:Name="ProductImage"
-                       Grid.Row="0" Grid.Column="0"
-                       Grid.RowSpan="1" Grid.ColumnSpan="1"
-                       Aspect="AspectFit"
-                       HeightRequest="300"
-                       Margin="0,0,0,16"
-                       />
+                       WidthRequest="300"
+                       HeightRequest="275"
+                       Aspect="AspectFill"
+                       Margin="0,0,24,0"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center" />
 
+                <!-- 제품 정보 -->
                 <StackLayout x:Name="InfoStack"
-                             Grid.Row="1" Grid.Column="0"
-                             Grid.RowSpan="1" Grid.ColumnSpan="1"
-                             Spacing="8">
-                    <Label x:Name="CodeNameLabel" FontAttributes="Bold" FontSize="22"/>
-                    <Label x:Name="ProductNameLabel" FontSize="16"/>
-                    <Label x:Name="TypeLabel" FontSize="16"/>
-                    <Label x:Name="CapacityLabel" FontSize="16"/>
-                    <Label x:Name="SizeLabel" FontSize="16"/>
-                    <Label x:Name="DescriptionLabel" FontSize="14" LineBreakMode="WordWrap"/>
+                             Spacing="8"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Start">
+                    <Label x:Name="CodeNameLabel"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="Black" />
+                    <Label x:Name="ProductNameLabel"
+                           FontSize="18"
+                           TextColor="Black" />
+                    <Label x:Name="TypeLabel"
+                           FontSize="16"
+                           TextColor="Black" />
+                    <Label x:Name="CapacityLabel"
+                           FontSize="16"
+                           TextColor="Black" />
+                    <Label x:Name="SizeLabel"
+                           FontSize="16"
+                           TextColor="Black" />
+                    <Label x:Name="DescriptionLabel"
+                           FontSize="16"
+                           TextColor="Black"
+                           LineBreakMode="WordWrap" />
                 </StackLayout>
             </Grid>
-        </Border>
+        </Frame>
     </Grid>
 </toolkit:Popup>

@@ -16,6 +16,8 @@ namespace KSCaseProductGallery
         private List<string> _categories = new List<string>(); // 시트(카테고리) 목록
         private string _selectedCategory = "";
 
+        private int _savedScrollIndex = -1; // 스크롤 위치 저장용
+
         public MainPage()
         {
             InitializeComponent();
@@ -54,8 +56,16 @@ namespace KSCaseProductGallery
                 .Distinct()
                 .ToList();
 
+            // 기존 선택된 카테고리가 있으면 유지, 없으면 첫 번째로
             if (_categories.Count > 0)
-                _selectedCategory = _categories[0];
+            {
+                if (string.IsNullOrEmpty(_selectedCategory) || !_categories.Contains(_selectedCategory))
+                    _selectedCategory = _categories[0];
+            }
+            else
+            {
+                _selectedCategory = "";
+            }
 
             UpdateProductList();
             UpdateCategoryTabs();
@@ -67,6 +77,11 @@ namespace KSCaseProductGallery
             Console.WriteLine($"[DEBUG] 카테고리 개수: {_categories.Count}");
             foreach (var c in _categories)
                 Console.WriteLine($"[DEBUG] 카테고리: {c}");
+
+            if (_savedScrollIndex >= 0 && ProductCollection.ItemsSource is IList<Product> list && list.Count > _savedScrollIndex)
+            {
+                ProductCollection.ScrollTo(_savedScrollIndex, position: ScrollToPosition.Center, animate: false);
+            }
         }
 
         private void UpdateProductList()
@@ -128,6 +143,12 @@ namespace KSCaseProductGallery
                     this.ShowPopup(popup);
                 }
             }
+        }
+
+        private void OnProductCollectionScrolled(object sender, ItemsViewScrolledEventArgs e)
+        {
+            // 중앙에 보이는 아이템을 기준으로 저장
+            _savedScrollIndex = e.CenterItemIndex;
         }
 
         private void OnAdminAreaTapped(object sender, EventArgs e)
