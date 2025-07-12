@@ -16,7 +16,7 @@
                     HorizontalOptions="Start" />
 
             <!-- 중앙 타이틀 -->
-            <Label Text="제품 갤러리"
+            <Label Text="KS Product Gallery"
                    Grid.Column="1"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
